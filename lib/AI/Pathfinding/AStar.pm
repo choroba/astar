@@ -61,6 +61,7 @@ sub doAStar
 					#change the parent
 					$surr_node->{parent} = $curr_node;
 					$surr_node->{g}      = $possG;
+					$surr_node->{f}      = $possG + $surr_node->{h};
 					$open->decrease_key($surr_node);
 				}
 			}
