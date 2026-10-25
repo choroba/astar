@@ -1,15 +1,12 @@
 #########################
 
 package AI::Pathfinding::AStar::Test;
-use Test::More tests => 6;
+use Test::More tests => 7;
 BEGIN {
   use base AI::Pathfinding::AStar;
 };
 
 #########################
-
-# Insert your test code below, the Test::More module is use()ed here so read
-# its man page ( perldoc Test::More ) for help writing this test script.
 
 #initialize a basic map
 #This example module represents the following map:
@@ -115,7 +112,16 @@ isa_ok($g, AI::Pathfinding::AStar, 'isa');
 can_ok($g, qw/getSurrounding findPath findPathIncr doAStar fillPath/, 'can');
 
 my $path1 = $g->findPath('1.3', '7.3');
-my $path2 = $g->findPath('2.3', '1.4');
 is(@$path1,        11,  "check path length");
 is($path1->[1], '2.3',       "check path 0");
-is($path2->[1], '2.4',       "check path 2");
+
+# A simpler example:
+#   . . . .
+#   . . . .
+#   . @ . .
+#   * . . .
+#
+my $path2 = $g->findPath('2.3', '1.4');
+is(@$path2,        3,  "check path length");
+ok($path2->[1] eq '2.4' || $path2->[1] eq '1.3',       "check path 2");
+

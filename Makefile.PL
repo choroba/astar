@@ -5,7 +5,7 @@ WriteMakefile(
     'NAME'		=> 'AI::Pathfinding::AStar',
     'VERSION_FROM'	=> 'lib/AI/Pathfinding/AStar.pm', # finds $VERSION
     'PREREQ_PM'		=> {
-				Heap::Binomial => 0, 
+				Heap::Binary => 0, 
 				Heap::Elem => 0, 
 				Test::More => 0.11,
 			   },

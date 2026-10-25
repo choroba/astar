@@ -7,7 +7,7 @@ use Carp;
 
 our $VERSION = '0.10';
 
-use Heap::Binomial;
+use Heap::Binary;
 
 use AI::Pathfinding::AStar::AStarNode;
 my $nodes;
@@ -88,7 +88,7 @@ sub findPath {
 	my $nodes = {};
 	my $curr_node = undef;
 
-	my $open = Heap::Binomial->new;
+	my $open = Heap::Binary->new;
 	#add starting square to the open list
 	$curr_node = AI::Pathfinding::AStar::AStarNode->new($start,0,0);  # AStarNode(id,g,h)
 	$curr_node->{parent} = undef;
@@ -117,7 +117,7 @@ sub findPathIncr {
 		$open  = $state->{'open'};
         }
 	else {
-		$open = Heap::Binomial->new;
+		$open = Heap::Binary->new;
 		#add starting square to the open list
 		$curr_node = AI::Pathfinding::AStar::AStarNode->new($start,0,0);  # AStarNode(id,g,h)
 		$curr_node->{parent} = undef;
@@ -195,7 +195,7 @@ As mentioned earlier, AI::Pathfinding::AStar provides two routines named C<findP
 
 =head1 PREREQUISITES
 
-This module requires Heap (specifically Heap::Binomial and Heap::Elem) to function.
+This module requires Heap (specifically Heap::Binary and Heap::Elem) to function.
 
 =head1 SEE ALSO
 
