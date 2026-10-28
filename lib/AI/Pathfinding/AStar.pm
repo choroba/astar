@@ -24,7 +24,16 @@ sub doAStar
 	my ($map, $target, $open, $nodes, $max) = @_;
 
 	my $n = 0;
-	FLOOP:	while ( (defined $open->top()) && ($open->top()->{id} ne $target) ) {
+
+	FLOOP:	while (defined $open->top()) {
+		# The target is finalized when it has the lowest priority in OPEN.
+		# With an admissible heuristic and h(target) == 0, its g is optimal.
+		if ($open->top()->{id} eq $target) {
+			$nodes->{$target}->{finished} = 1;
+			last FLOOP
+		}
+
+
 
 		#allow incremental calculation
 		last FLOOP if (defined($max) and (++$n == $max));
@@ -73,7 +82,13 @@ sub fillPath
 	my ($map,$open,$nodes,$target) = @_;
 	my $path = [];
 
-        my $curr_node = (exists $nodes->{$target}) ? $nodes->{$target} : $open->top();
+	# A discovered target is not necessarily finalized in an incremental
+	# search. An unreachable target has no path.
+	return $path unless exists $nodes->{$target}
+		&& $nodes->{$target}->{finished};
+
+	my $curr_node = $nodes->{$target};
+
 	while (defined $curr_node) {
 		unshift @$path, $curr_node->{id};
 		$curr_node = $curr_node->{parent};
@@ -136,8 +151,9 @@ sub findPathIncr {
 		'path'    => $path,
 		'open'    => $open,
 		'visited' => $nodes,
-		'done'    => defined($nodes->{$target}),
-	};
+		'done'    => exists $nodes->{$target}
+		             && $nodes->{$target}->{finished} ? 1 : 0,
+        };
 
 	return $state;
 }
